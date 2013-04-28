@@ -1,0 +1,104 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="Хранилище Models" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityContainer Name="Хранилище ModelsContainer">
+    <EntitySet Name="PermissionPaths" EntityType="Хранилище Models.PermissionPaths" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Permissions" EntityType="Хранилище Models.Permissions" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Roles" EntityType="Хранилище Models.Roles" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="sysdiagrams" EntityType="Хранилище Models.sysdiagrams" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Users" EntityType="Хранилище Models.Users" store:Type="Tables" Schema="dbo" />
+    <AssociationSet Name="FK_PermissionPaths_Permissions" Association="Хранилище Models.FK_PermissionPaths_Permissions">
+      <End Role="Permissions" EntitySet="Permissions" />
+      <End Role="PermissionPaths" EntitySet="PermissionPaths" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Roles_Permissions" Association="Хранилище Models.FK_Roles_Permissions">
+      <End Role="Permissions" EntitySet="Permissions" />
+      <End Role="Roles" EntitySet="Roles" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Users_Roles" Association="Хранилище Models.FK_Users_Roles">
+      <End Role="Roles" EntitySet="Roles" />
+      <End Role="Users" EntitySet="Users" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="PermissionPaths">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="PermissionId" Type="int" Nullable="false" />
+    <Property Name="Controller" Type="nvarchar" Nullable="false" MaxLength="255" />
+    <Property Name="Action" Type="nvarchar" Nullable="false" MaxLength="255" />
+  </EntityType>
+  <EntityType Name="Permissions">
+    <Key>
+      <PropertyRef Name="PermissionId" />
+    </Key>
+    <Property Name="PermissionId" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="PermissionBrowse" Type="bit" Nullable="false" />
+    <Property Name="PermissionEdit" Type="bit" Nullable="false" />
+    <Property Name="PermissionDelete" Type="bit" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Roles">
+    <Key>
+      <PropertyRef Name="RoleId" />
+    </Key>
+    <Property Name="RoleId" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="RoleName" Type="nvarchar" Nullable="false" MaxLength="255" />
+    <Property Name="PermissionId" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="sysdiagrams">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="nvarchar" Nullable="false" MaxLength="128" />
+    <Property Name="principal_id" Type="int" Nullable="false" />
+    <Property Name="diagram_id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="version" Type="int" />
+    <Property Name="definition" Type="varbinary(max)" />
+  </EntityType>
+  <EntityType Name="Users">
+    <Key>
+      <PropertyRef Name="UserId" />
+    </Key>
+    <Property Name="UserId" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="Login" Type="nvarchar" Nullable="false" MaxLength="255" />
+    <Property Name="Password" Type="nvarchar" Nullable="false" MaxLength="255" />
+    <Property Name="Email" Type="nvarchar" Nullable="false" MaxLength="255" />
+    <Property Name="RoleId" Type="int" Nullable="false" />
+  </EntityType>
+  <Association Name="FK_PermissionPaths_Permissions">
+    <End Role="Permissions" Type="Хранилище Models.Permissions" Multiplicity="1" />
+    <End Role="PermissionPaths" Type="Хранилище Models.PermissionPaths" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Permissions">
+        <PropertyRef Name="PermissionId" />
+      </Principal>
+      <Dependent Role="PermissionPaths">
+        <PropertyRef Name="PermissionId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Roles_Permissions">
+    <End Role="Permissions" Type="Хранилище Models.Permissions" Multiplicity="1" />
+    <End Role="Roles" Type="Хранилище Models.Roles" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Permissions">
+        <PropertyRef Name="PermissionId" />
+      </Principal>
+      <Dependent Role="Roles">
+        <PropertyRef Name="PermissionId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Users_Roles">
+    <End Role="Roles" Type="Хранилище Models.Roles" Multiplicity="1" />
+    <End Role="Users" Type="Хранилище Models.Users" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Roles">
+        <PropertyRef Name="RoleId" />
+      </Principal>
+      <Dependent Role="Users">
+        <PropertyRef Name="RoleId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema>
